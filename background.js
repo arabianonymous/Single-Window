@@ -57,10 +57,10 @@ var observers = {
     }
     const windowId = localStorage.getItem('window.id');
     if (
-      tab.url.startsWith('http') &&
+      (tab.url.startsWith('http') || tab.url.startsWith('file')) &&
       String(tab.windowId) !== windowId
     ) {
-      console.log('block', 'http');
+      console.log('block', 'site');
       moveTo(tab, windowId);
     }
     else if (
@@ -70,7 +70,7 @@ var observers = {
       window.setTimeout(() => chrome.tabs.get(tab.id, tab => {
         if (
           tab &&
-          (tab.url.startsWith('http') || tab.url === 'about:blank' || tab.url === '')
+          ((tab.url.startsWith('http') || tab.url.startsWith('file')) || tab.url === 'about:blank' || tab.url === '')
         ) {
           console.log('block', 'about:blank');
           moveTo(tab, windowId);
